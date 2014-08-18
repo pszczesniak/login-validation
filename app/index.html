@@ -1,0 +1,36 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>blstream test</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+     <section>
+        <div id="content">
+            <form method="post" action="//api.test/auth">
+                <fieldset>
+                    <label for="email">email</label> <input type="text" name="email" id="email"/>
+                    <label for="password">password</label> <input type="password" name="password" id="password"/>
+                    <input type="submit" value="login" />
+                </fieldset>
+            </form>
+        </div>
+    </section>
+
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <!-- build:js({app,.tmp}) scripts/login-wrapper.js -->
+    <script src="scripts/login-wrapper.js"></script>
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+    <!-- endbuild -->
+
+</body>
+</html>
