@@ -6,4 +6,4 @@ Submit via XMLHttpRequest.
 All tests done in Mocha.
 Browser supported: IE9+, Firefox, Chrome.
 
-http://blstream-test.pszczesniak.megiteam.pl/
+demo: http://blstream-test.pszczesniak.megiteam.pl/
