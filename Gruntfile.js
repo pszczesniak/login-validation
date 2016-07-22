@@ -22,6 +22,8 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  var serveStatic = require('serve-static');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -50,11 +52,11 @@ module.exports = function (grunt) {
       },
       sass: {
         files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['sass:server', 'autoprefixer']
+        tasks: ['sass:server', 'sass:dist']
       },
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'autoprefixer']
+        tasks: ['newer:copy:styles']
       },
       livereload: {
         options: {
@@ -81,9 +83,9 @@ module.exports = function (grunt) {
         options: {
           middleware: function(connect) {
             return [
-              connect.static('.tmp'),
-              connect().use('/bower_components', connect.static('./bower_components')),
-              connect.static(config.app)
+              serveStatic('.tmp'),
+              connect().use('/bower_components', serveStatic('./bower_components')),
+              serveStatic(config.app)
             ];
           }
         }
@@ -94,10 +96,10 @@ module.exports = function (grunt) {
           port: 9001,
           middleware: function(connect) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
-              connect().use('/bower_components', connect.static('./bower_components')),
-              connect.static(config.app)
+              serveStatic('.tmp'),
+              serveStatic('test'),
+              connect().use('/bower_components', serveStatic('./bower_components')),
+              serveStatic(config.app)
             ];
           }
         }
@@ -152,10 +154,14 @@ module.exports = function (grunt) {
     // Compiles Sass to CSS and generates necessary files if requested
     sass: {
       options: {
+        precision: 6,
         sourceMap: true,
         includePaths: ['bower_components']
       },
       dist: {
+        options: {
+            outputStyle: 'compressed'
+        },
         files: [{
           expand: true,
           cwd: '<%= config.app %>/styles',
@@ -165,6 +171,9 @@ module.exports = function (grunt) {
         }]
       },
       server: {
+        options: {
+            outputStyle: 'nested'
+        },
         files: [{
           expand: true,
           cwd: '<%= config.app %>/styles',
@@ -289,40 +298,6 @@ module.exports = function (grunt) {
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
       }
-    },
-
-    // Generates a custom Modernizr build that includes only the tests you
-    // reference in your app
-    modernizr: {
-      dist: {
-        devFile: 'bower_components/modernizr/modernizr.js',
-        outputFile: '<%= config.dist %>/scripts/vendor/modernizr.js',
-        files: {
-          src: [
-            '<%= config.dist %>/scripts/{,*/}*.js',
-            '<%= config.dist %>/styles/{,*/}*.css',
-            '!<%= config.dist %>/scripts/vendor/*'
-          ]
-        },
-        uglify: true
-      }
-    },
-
-    // Run some tasks in parallel to speed up build process
-    concurrent: {
-      server: [
-        'sass:server',
-        'copy:styles'
-      ],
-      test: [
-        'copy:styles'
-      ],
-      dist: [
-        'sass',
-        'copy:styles',
-        'imagemin',
-        'svgmin'
-      ]
     }
   });
 
@@ -338,7 +313,6 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
-      'concurrent:server',
       'connect:livereload',
       'watch'
     ]);
@@ -352,8 +326,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', function (target) {
     if (target !== 'watch') {
       grunt.task.run([
-        'clean:server',
-        'concurrent:test',
+        'clean:server'
       ]);
     }
 
@@ -366,20 +339,20 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    'sass:server',
+    'sass:dist',
     'useminPrepare',
-    'concurrent:dist',
     'concat',
     'cssmin',
     'uglify',
     'copy:dist',
-    'modernizr',
     'rev',
     'usemin',
     'htmlmin'
   ]);
 
   grunt.registerTask('default', [
-    //'newer:jshint',
+    'newer:jshint',
     'test',
     'build'
   ]);

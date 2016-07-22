@@ -1,3 +1,6 @@
+/*jslint browser: true */
+/*global Loginform */
+
 var psw = document.getElementById('password'),
     email = document.getElementById('email'),
     form = document.getElementById('content').querySelector('form'),

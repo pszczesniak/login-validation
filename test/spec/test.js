@@ -1,4 +1,5 @@
-/* global describe, it */
+/* global describe, it, Loginform, expect, beforeEach, sinon, afterEach */
+/*jshint unused:false*/
 
 (function () {
     'use strict';
@@ -37,13 +38,13 @@
         });
         
         describe('#checkPasswordContainsNumber', function() {
-            it('should check password if it\'s not contain any number', function() {
+            it('should check password if it\'s not contain any digits', function() {
                 var psw = (new Loginform()).checkPasswordContainsNumber('aaabbbccc');
                 expect(psw).to.equal(false);
             });
         });
         describe('#checkPasswordContainsNumber', function() {
-            it('should check password if it\'s contain any number', function() {
+            it('should check password if it\'s contain any digits', function() {
                 var psw = (new Loginform()).checkPasswordContainsNumber('aaa1bbb3ccc0');
                 expect(psw).to.equal(true);
             });
@@ -135,44 +136,44 @@
             afterEach(function () {
                 server.restore();
             });
-            it('with status === 201 message should be equal \"logowanie poprawne\"', function(done) {
+            it('with status === 201 message should be equal \"login correct\"', function(done) {
                 server.respondWith(
                     'POST',
                     [201, { 'Content-Type': 'application/json' }, JSON.stringify('{"test": test}')]
                 );
                 server.respond();
                 var fakeStatus = server.responses[0].response[0];
-                expect(p.showResponse(fakeStatus)).to.equal('logowanie poprawne');
+                expect(p.showResponse(fakeStatus)).to.equal('login correct');
                 done();
             });
-            it('with status === 401 message should be equal \"niepoprawne login lub hasło\"', function(done) {
+            it('with status === 401 message should be equal \"incorrect username or password\"', function(done) {
                 server.respondWith(
                     'POST',
                     [401, { 'Content-Type': 'application/json' }, JSON.stringify('{"test": test}')]
                 );
                 server.respond();
                 var fakeStatus = server.responses[0].response[0];
-                expect(p.showResponse(fakeStatus)).to.equal('niepoprawne login lub hasło');
+                expect(p.showResponse(fakeStatus)).to.equal('incorrect username or password');
                 done();
             });
-            it('with status === 400 message should be equal \"niepoprawne dane\"', function(done) {
+            it('with status === 400 message should be equal \"incorrect data\"', function(done) {
                 server.respondWith(
                     'POST',
                     [400, { 'Content-Type': 'application/json' }, JSON.stringify('{"test": test}')]
                 );
                 server.respond();
                 var fakeStatus = server.responses[0].response[0];
-                expect(p.showResponse(fakeStatus)).to.equal('niepoprawne dane');
+                expect(p.showResponse(fakeStatus)).to.equal('incorrect data');
                 done();
             });
-            it('with status === 500 message should be equal \"błąd usługi\"', function(done) {
+            it('with status === 500 message should be equal \"service error\"', function(done) {
                 server.respondWith(
                     'POST',
                     [500, { 'Content-Type': 'application/json' }, JSON.stringify('{"test": test}')]
                 );
                 server.respond();
                 var fakeStatus = server.responses[0].response[0];
-                expect(p.showResponse(fakeStatus)).to.equal('błąd usługi');
+                expect(p.showResponse(fakeStatus)).to.equal('service error');
                 done();
             });
         });

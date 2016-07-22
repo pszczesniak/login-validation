@@ -1,8 +1,12 @@
+/*jslint browser: true */
+/*jshint unused:false*/
+
 (function (loginForm) {
-    "use strict";
+    'use strict';
     function Loginform(password) {
-        this.password = password || "";
-    };
+        this.password = password || '';
+    }
+
     loginForm.Loginform = Loginform;
     Loginform.prototype = {
         enoughRegex: /^.{6,}$/,
@@ -16,35 +20,35 @@
         emailState: false,
         checkPasswordEmpty: function (password) {
             if (password.length === 0 || !password.trim()) {
-                this.passwordErrorsArray.push("Hasło nie może być puste.");
+                this.passwordErrorsArray.push('Hasło nie może być puste.');
                 return false;
             }
             return true;
         },
         checkPasswordLength: function (password) {
             if (false === this.enoughRegex.test(password)) {
-                this.passwordErrorsArray.push("Hasło zbyt krótkie - minimum 6 znaków.");
+                this.passwordErrorsArray.push('Password is too short - min 6 characters.');
                 return false;
             }
             return true;
         },
         checkPasswordContainsNumber: function (password) {
             if (!password.match(this.numbers)) {
-                this.passwordErrorsArray.push("Hasło musi zawierać przynajniej jedną cyfrę.");
+                this.passwordErrorsArray.push('Password must contains at least one digit.');
                 return false;
             }
             return true;
         },
         checkPasswordContainsSmallLetter: function (password) {
             if (!password.match(this.lowerCaseCharacters)) {
-                this.passwordErrorsArray.push("Hasło musi zawierać przynajniej jedną małą literę.");
+                this.passwordErrorsArray.push('The password must contain at least one lowercase letter.');
                 return false;
             }
             return true;
         },
         checkPasswordContainsBigLetter: function (password) {
             if (!password.match(this.upperCaseCharacters)) {
-                this.passwordErrorsArray.push("Hasło musi zawierać przynajniej jedną dużą literę.");
+                this.passwordErrorsArray.push('The password must contain at least one uppercase letter.');
                 return false;
             }
             return true;
@@ -66,14 +70,14 @@
         },
         checkEmailEmpty: function (email) {
             if (email.length === 0 || !email.trim()) {
-                this.emailErrorsArray.push("E-mail nie może być pusty.");
+                this.emailErrorsArray.push('E-mail cannot be blank.');
                 return false;
             }
             return true;
         },
         checkCorrectEmail: function (email) {
             if (false === this.rfc2822email.test(email)) {
-                this.emailErrorsArray.push("Wprowadzony adres nie jest poprawnym adresem e-mail.");
+                this.emailErrorsArray.push('Entered email address is not a proper email address.');
                 return false;
             }
             return true;
@@ -90,7 +94,7 @@
             return this.emailState;
         },
         removeMessages: function (msgType) {
-            var MsgDiv = document.getElementById(msgType + "-messages");
+            var MsgDiv = document.getElementById(msgType + '-messages');
             if (MsgDiv) {
                 MsgDiv.parentNode.removeChild(MsgDiv);
             }
@@ -118,8 +122,8 @@
             var loginData = {email: email, password: password},
                 req = new XMLHttpRequest();
             req.open('POST', action, true);
-            req.responseType = "text";
-            req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            req.responseType = 'text';
+            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
             req.onreadystatechange = function () {
                 if (req.readyState === 4) {
                     callback(req.status);
@@ -128,7 +132,7 @@
             req.send(JSON.stringify(loginData));
         },
         showResponse: function (status) {
-            var responseMessages = {201: "logowanie poprawne", 400: "niepoprawne dane", 401: "niepoprawne login lub hasło", 500: "błąd usługi"};
+            var responseMessages = {201: 'login correct', 400: 'incorrect data', 401: 'incorrect username or password', 500: 'service error'};
             if (responseMessages[status]) {
                 var parentMessageElement = 'form';
                 if (status === 200) {
