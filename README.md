@@ -1,5 +1,4 @@
 #Login validation - written in pure javascript
-================
 
 Javascript password and email validation.
 Submit via XMLHttpRequest.
