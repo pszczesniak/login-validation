@@ -10,6 +10,9 @@
 
 module.exports = function (grunt) {
 
+  // var sass = require('./node_modules/grunt-sass/tasks/sass.js');
+  var sass = require('node-sass');
+
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
@@ -154,13 +157,15 @@ module.exports = function (grunt) {
     // Compiles Sass to CSS and generates necessary files if requested
     sass: {
       options: {
+        implementation: sass,
         precision: 6,
         sourceMap: true,
-        includePaths: ['bower_components']
+        // includePaths: ['bower_components']
       },
       dist: {
         options: {
-            outputStyle: 'compressed'
+          // implementation: sass,
+          outputStyle: 'compressed'
         },
         files: [{
           expand: true,
@@ -172,7 +177,8 @@ module.exports = function (grunt) {
       },
       server: {
         options: {
-            outputStyle: 'nested'
+          // implementation: sass,
+          outputStyle: 'nested'
         },
         files: [{
           expand: true,
